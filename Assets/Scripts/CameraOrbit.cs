@@ -5,7 +5,9 @@ using UnityEngine;
 public class CameraOrbit : MonoBehaviour
 {
 
-    public PlayerMovement target;
+    public PlayerMovement moveScript;
+    private PlayerTargeting targetScript;
+    private Camera cam;
 
     private float yaw = 0;
     private float pitch = 0;
@@ -16,20 +18,56 @@ public class CameraOrbit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        targetScript = moveScript.GetComponent<PlayerTargeting>();
+        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        RotateCamera();
+        PlayerOrbitCamera();
 
-        transform.position = target.transform.position;
+        transform.position = moveScript.transform.position;
 
+
+        //if aiming set camera rotation to look at target
+        RotateCamToLookAtTarget();
+
+        //"zoom" in the camera
+        ZoomCamera();
+    }
+
+    private void ZoomCamera()
+    {
+        float dis = 10;
+
+        if (targetScript && targetScript.target != null && targetScript.wantsToTarget) dis = 3;
+
+        cam.transform.localPosition = AnimMath.Slide(cam.transform.localPosition, new Vector3(0,0,-dis), .001f);
+
+      
+    }
+
+    private void RotateCamToLookAtTarget()
+    {
+        //if targeting look at target
+        if(targetScript && targetScript.target != null && targetScript.wantsToTarget)
+        {
+            Vector3 lookTarget = targetScript.target.position - cam.transform.position;
+
+            Quaternion targetRotation = Quaternion.LookRotation(lookTarget, Vector3.up);
+
+            cam.transform.rotation = AnimMath.Slide(cam.transform.rotation, targetRotation, .001f);
+        }
+        else
+        {
+            //if not
+            cam.transform.localRotation = AnimMath.Slide(cam.transform.localRotation, Quaternion.identity, .001f);  // no rotation....
+        }
 
     }
 
-    private void RotateCamera()
+    private void PlayerOrbitCamera()
     {
         float mx = Input.GetAxisRaw("Mouse X");
         float my = Input.GetAxisRaw("Mouse Y");
@@ -37,8 +75,20 @@ public class CameraOrbit : MonoBehaviour
         yaw += mx * cameraSensitivityX;
         pitch += my * cameraSensitivityY;
 
-        pitch = Mathf.Clamp(pitch, -89, 89);
+        if (targetScript && targetScript.target != null && targetScript.wantsToTarget)
+        {
+            pitch = Mathf.Clamp(pitch, 15, 60);
 
-        transform.rotation = Quaternion.Euler(pitch, yaw, 0);
+            //find player facing
+            float playerYaw = moveScript.transform.eulerAngles.y;
+            //clamp camera-rig Yaw to playerYaw +- 40
+            yaw = Mathf.Clamp(yaw, playerYaw - 40, playerYaw + 40);
+        }
+        else
+        {
+            pitch = Mathf.Clamp(pitch, -10, 89);
+        }
+
+        transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(pitch, yaw, 0), .001f);
     }
 }

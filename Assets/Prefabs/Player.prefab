@@ -717,7 +717,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ad9916de2d2db4a92c6d57d181125d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  potientalTargets: []
   target: {fileID: 0}
+  wantsToTarget: 0
+  visionDis: 10
+  visionAngle: 80
 --- !u!114 &8806558816853624010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,6 +734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6034796e7d734c9efaa30ddb13133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leg1: {fileID: 5988141016750393995}
+  leg2: {fileID: 5988141016208509059}
   walkSpeed: 5
 --- !u!1 &5988141017136496822
 GameObject:

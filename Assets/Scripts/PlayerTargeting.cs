@@ -20,7 +20,7 @@ public class PlayerTargeting : MonoBehaviour
     void Start()
     {
         //set this at end of project it's annoying while developing
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()

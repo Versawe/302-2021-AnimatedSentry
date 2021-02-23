@@ -7,7 +7,7 @@ public class TurretTarget : MonoBehaviour
 
     public Transform Player;
 
-    private bool isClose = false;
+    public bool isClose = false;
 
     Quaternion lookingRotation;
     Quaternion startRotation;

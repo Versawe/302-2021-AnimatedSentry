@@ -17,6 +17,18 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5;
 
     private float verticalVelocity = 0;
+    private float gravityMultiplier = 30;
+    private float jumpImpulse = 10;
+
+    private float timeLeftGrounded = 0;
+
+    public bool isGrounded
+    {
+        get
+        {
+            return cc.isGrounded || timeLeftGrounded > 0;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +39,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // countdown
+        if (timeLeftGrounded > 0) timeLeftGrounded -= Time.deltaTime;
+
         MovePlayer();
-        WiggleLegs();
+
+        if (isGrounded) WiggleLegs(); // idle + walk
+        else AirLegs(); // jump (or falling)
     }
 
     private void WiggleLegs()
@@ -64,10 +81,19 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    private void AirLegs()
+    {
+        leg1.localRotation = AnimMath.Slide(leg1.localRotation, Quaternion.Euler(30, 0, 0), .001f);
+        leg2.localRotation = AnimMath.Slide(leg2.localRotation, Quaternion.Euler(-30, 0, 0), .001f);
+    }
+
     private void MovePlayer()
     {
         float h = Input.GetAxis("Horizontal"); // strafing?
         float v = Input.GetAxis("Vertical"); // forward / backward
+
+        bool isJumpHeld = Input.GetButton("Jump");
+        bool onJumpPress = Input.GetButtonDown("Jump");
 
         isTryingToMove = (h != 0 || v != 0);
         if (isTryingToMove)
@@ -80,13 +106,28 @@ public class PlayerMovement : MonoBehaviour
         inputDirection = transform.forward * v + transform.right * h;
 
         //applying gravity
-        if(!cc.isGrounded) verticalVelocity += 10 * Time.deltaTime;
-        if (cc.isGrounded) verticalVelocity = 0;
+        if(!cc.isGrounded) verticalVelocity += gravityMultiplier * Time.deltaTime;
 
         // adds lateral movement to vertical movement
         Vector3 moveDelta = inputDirection * walkSpeed + verticalVelocity * Vector3.down;
 
+
+
         //passes it all to the cc
         cc.Move(moveDelta * Time.deltaTime);
+        if (cc.isGrounded)
+        {
+            verticalVelocity = 0;
+            timeLeftGrounded = .2f;
+        }
+
+        if (isGrounded)
+        {
+            if (isJumpHeld)
+            {
+                verticalVelocity = -jumpImpulse;
+                timeLeftGrounded = 0; // not on ground
+            }
+        }
     }
 }

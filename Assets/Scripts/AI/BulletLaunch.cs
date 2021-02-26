@@ -6,7 +6,7 @@ public class BulletLaunch : MonoBehaviour
 {
     Rigidbody rb;
 
-    private float thrust = 50;
+    private float thrust = 25;
     private float lifeTimer = 5f;
 
     // Start is called before the first frame update

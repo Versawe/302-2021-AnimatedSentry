@@ -170,6 +170,7 @@ MonoBehaviour:
   moveScript: {fileID: 321751886}
   cameraSensitivityX: 5
   cameraSensitivityY: -5
+  shakeIntensity: 0
 --- !u!114 &321751886 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8806558816853624010, guid: 0709e76847ba3104dbf6a096f462497c, type: 3}
@@ -375,6 +376,7 @@ GameObject:
   - component: {fileID: 1087562914}
   - component: {fileID: 1087562913}
   - component: {fileID: 1087562917}
+  - component: {fileID: 1087562918}
   m_Layer: 0
   m_Name: Monster1 (1)
   m_TagString: Untagged
@@ -470,6 +472,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50746e8d020138942a5776b774ca4a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1087562918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087562912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1ac75ca788e544ea00f84ee09ebbac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 200
 --- !u!1 &1156192141
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +498,7 @@ GameObject:
   - component: {fileID: 1156192143}
   - component: {fileID: 1156192142}
   - component: {fileID: 1156192146}
+  - component: {fileID: 1156192147}
   m_Layer: 0
   m_Name: Monster1
   m_TagString: Untagged
@@ -578,6 +594,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50746e8d020138942a5776b774ca4a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1156192147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156192141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1ac75ca788e544ea00f84ee09ebbac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 50
 --- !u!1 &1203292513
 GameObject:
   m_ObjectHideFlags: 0

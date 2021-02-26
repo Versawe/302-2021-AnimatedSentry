@@ -15,6 +15,8 @@ public class CameraOrbit : MonoBehaviour
     public float cameraSensitivityX = 10;
     public float cameraSensitivityY = 10;
 
+    public float shakeIntensity = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,34 @@ public class CameraOrbit : MonoBehaviour
 
         //"zoom" in the camera
         ZoomCamera();
+
+        ShakeCamera();
+    }
+
+    public void Shake(float intensity = 1)
+    {
+        if(intensity > 1)
+        {
+            shakeIntensity = intensity;
+        }
+        else
+        {
+            shakeIntensity += intensity;
+            if (shakeIntensity > 1) shakeIntensity = 1;
+        }
+
+    }
+
+    private void ShakeCamera()
+    {
+        if (shakeIntensity < 0) shakeIntensity = 0;
+        if (shakeIntensity > 0) shakeIntensity -= Time.deltaTime;
+        else return; // shake intensity is 0 so don't do math
+        //pick a small random rotation
+        Quaternion targetRot = AnimMath.Lerp(Random.rotation, Quaternion.identity, .996f);
+
+        //cam.transform.localRotation *= targetRot;
+        cam.transform.localRotation = AnimMath.Lerp(cam.transform.localRotation, cam.transform.localRotation * targetRot, shakeIntensity * shakeIntensity);
     }
 
     private void ZoomCamera()

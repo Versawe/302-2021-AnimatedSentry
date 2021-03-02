@@ -153,14 +153,16 @@ public class PlayerTargeting : MonoBehaviour
         //finds closest target
         foreach(ShootableThing pt in potientalTargets)
         {
-            float dd = (pt.transform.position - transform.position).sqrMagnitude;
-
-            if(dd < cloestDistanceSoFar || target == null)
+            if (pt)
             {
-                target = pt.transform;
-                cloestDistanceSoFar = dd;
-            }
+                float dd = (pt.transform.position - transform.position).sqrMagnitude;
 
+                if (dd < cloestDistanceSoFar || target == null)
+                {
+                    target = pt.transform;
+                    cloestDistanceSoFar = dd;
+                }
+            }
         }
     }
 }

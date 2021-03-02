@@ -69,7 +69,7 @@ public class CameraOrbit : MonoBehaviour
 
     private void ZoomCamera()
     {
-        float dis = 10;
+        float dis = 6;
 
         if (targetScript && targetScript.target != null && targetScript.wantsToTarget) dis = 3;
 

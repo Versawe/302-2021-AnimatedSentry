@@ -7,11 +7,12 @@ public class TurretTarget : MonoBehaviour
 
     public Transform Player;
     public Transform GunParent;
+    public ParticleSystem parts;
 
     public bool isClose = false;
     private bool idleTrigger = false;
     private bool dyingTrigger = false;
-    private float dyingTimer = 2f;
+    private float dyingTimer = 3.5f;
     private float idleTimer = 1f;
 
     HealthSystem healthCheck;
@@ -26,22 +27,56 @@ public class TurretTarget : MonoBehaviour
     {
         startRotation = transform.localRotation;
         healthCheck = GetComponentInParent<HealthSystem>();
-        dyingTrigger = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckForDeath();
+
+        if (dyingTrigger) return;
+
         DistanceCheck();
+        IdleAndAttackAnimation();
 
+    }
 
-        if (!isClose && idleTimer > 0 && !idleTrigger && !dyingTrigger)
+    private void CheckForDeath()
+    {
+        if (healthCheck.isDying)
+        {
+            dyingTrigger = true;
+            isClose = false;
+        }
+        if (dyingTrigger && dyingTimer > 0)
+        {
+            float betweenX = Mathf.Sin(Time.time * 40) * 25f;
+            float betweenZ = Mathf.Sin(Time.time * 5) * 5f;
+            turnVar += (turnSpeed + 100) * Time.deltaTime;
+            Quaternion turnRot = Quaternion.Euler(betweenX, turnVar, betweenZ);
+            transform.localRotation = AnimMath.Slide(transform.localRotation, turnRot, 0.001f);
+
+            dyingTimer -= 1 * Time.deltaTime;
+        }
+        if (dyingTimer <= 0.01f)
+        {
+            Instantiate(parts, GunParent.position, GunParent.rotation);
+        }
+        if (dyingTimer <= 0)
+        {
+            Destroy(GunParent.gameObject);
+        }
+    }
+
+    private void IdleAndAttackAnimation()
+    {
+        if (!isClose && idleTimer > 0 && !idleTrigger)
         {
             lookingRotation = Quaternion.Euler(0, 0, 0);
-            transform.localRotation = AnimMath.Slide(transform.localRotation, lookingRotation, 0.01f);
+            transform.localRotation = AnimMath.Slide(transform.localRotation, lookingRotation, 0.09f);
             idleTimer -= 1 * Time.deltaTime;
         }
-        else if(isClose && !dyingTrigger)
+        else if (isClose)
         {
             idleTimer = 1f;
             Vector3 disToTarget = Player.position - transform.position;
@@ -54,32 +89,19 @@ public class TurretTarget : MonoBehaviour
         {
             turnVar += turnSpeed * Time.deltaTime;
             Quaternion dieRot = Quaternion.Euler(transform.localRotation.x, turnVar, transform.localRotation.z);
-            transform.localRotation = AnimMath.Slide(transform.localRotation, dieRot, 0.001f);
+            transform.localRotation = AnimMath.Slide(transform.localRotation, dieRot, 0.01f);
         }
         if (idleTimer <= 0)
         {
             idleTrigger = true;
         }
-
-        if (healthCheck.isDying)
-        {
-            dyingTrigger = true;
-        }
-        if (dyingTrigger && dyingTimer > 0)
-        {
-            float betweenX = AnimMath.Lerp(-90, 90, 0.001f);
-            float betweenZ = AnimMath.Lerp(-15, 15, 0.001f);
-            turnVar += (turnSpeed * turnSpeed) * Time.deltaTime;
-            Quaternion turnRot = Quaternion.Euler(betweenX, turnVar, betweenZ);
-        }
-
     }
 
     private void DistanceCheck()
     {
         float disCheck = Vector3.Distance(transform.position, Player.position);
 
-        if (disCheck <= 10)
+        if (disCheck <= 11)
         {
             isClose = true;
             idleTrigger = false;

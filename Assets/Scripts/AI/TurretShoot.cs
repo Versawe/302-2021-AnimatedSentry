@@ -42,6 +42,7 @@ public class TurretShoot : MonoBehaviour
             {
                 Instantiate(bullet, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
                 shootDelay = 0;
+                transform.localEulerAngles += new Vector3(-15, 0, 0);
             }
         }
         else

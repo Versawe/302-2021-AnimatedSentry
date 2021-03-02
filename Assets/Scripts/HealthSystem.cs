@@ -9,6 +9,8 @@ public class HealthSystem : MonoBehaviour
 
     public float healthMax = 100;
 
+    public bool isDying = false;
+
     private void Start()
     {
         health = healthMax;
@@ -25,6 +27,7 @@ public class HealthSystem : MonoBehaviour
     public void Die()
     {
         //removes gameobject from the game
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        isDying = true;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.UI;
 
 public class PlayerTargeting : MonoBehaviour
 {
@@ -35,19 +36,42 @@ public class PlayerTargeting : MonoBehaviour
 
     public CameraOrbit camOrbit;
 
+    public ParticleSystem parts;
+
+    public HealthSystem playerHealth;
+
+    public Slider healthBar;
+
+    public static float pHealthValue = 200;
+    public static float enemiesKilled = 0;
+
     void Start()
     {
-        //set this at end of project it's annoying while developing
+        //reset static variables
+        pHealthValue = 200;
+        enemiesKilled = 0;
+        //cursor lock on start
         Cursor.lockState = CursorLockMode.Locked;
 
         startPosArmL = armL.localPosition;
         startPosArmR = armR.localPosition;
 
         camOrbit = Camera.main.GetComponentInParent<CameraOrbit>();
+
+        playerHealth = GetComponent<HealthSystem>();
     }
 
     void Update()
     {
+        if (playerHealth.isDying) //if player is dead, player does not want to target anymore and healthbar disappears
+        {
+            wantsToTarget = false;
+            healthBar.gameObject.SetActive(false);
+            return; // also stops reset of update here
+        }
+
+        healthBar.value = pHealthValue; // this sets the health Bar to the static float variable constantly
+
         if (!wantsToTarget) target = null;
 
         wantsToTarget = Input.GetButton("Fire2");
@@ -73,6 +97,7 @@ public class PlayerTargeting : MonoBehaviour
 
     private void SlideArmsHome()
     {
+        //slide arms back on shots
         armL.localPosition = AnimMath.Slide(armL.localPosition, startPosArmL, 0.01f);
         armR.localPosition = AnimMath.Slide(armR.localPosition, startPosArmR, 0.01f);
     }
@@ -84,11 +109,13 @@ public class PlayerTargeting : MonoBehaviour
         if (!wantsToAttack) return; // p not shooting
         if (!target) return; // no target
 
+        //doing damage to target sentry
         HealthSystem health = target.GetComponent<HealthSystem>();
 
         if (health)
         {
             health.TakeDamage(20);
+            Instantiate(parts, target.position, target.rotation);
         }
         if (!CanSeeThing(target)) return;
 
@@ -151,16 +178,22 @@ public class PlayerTargeting : MonoBehaviour
         float cloestDistanceSoFar = 0;
 
         //finds closest target
-        foreach(ShootableThing pt in potientalTargets)
+        foreach(ShootableThing pt in potientalTargets) // appends shootable thing to a list of potential targets for aiming at
         {
             if (pt)
             {
+                HealthSystem tempHealthCheck;
+                tempHealthCheck = pt.GetComponent<HealthSystem>(); // aids to get player to stop aiming at sentry once sentry is in death animation
+
                 float dd = (pt.transform.position - transform.position).sqrMagnitude;
 
                 if (dd < cloestDistanceSoFar || target == null)
                 {
-                    target = pt.transform;
-                    cloestDistanceSoFar = dd;
+                    if (!tempHealthCheck.isDying) // aids to get player to stop aiming at sentry once sentry is in death animation
+                    {
+                        target = pt.transform;
+                        cloestDistanceSoFar = dd;
+                    }
                 }
             }
         }

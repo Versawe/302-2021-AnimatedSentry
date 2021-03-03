@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float timeLeftGrounded = 0;
 
+    public HealthSystem playerHealth;
+
     public bool isGrounded
     {
         get
@@ -34,11 +36,13 @@ public class PlayerMovement : MonoBehaviour
     {
         cam = Camera.main;
         cc = GetComponent<CharacterController>();
+        playerHealth = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playerHealth.isDying) return; // do not continue if player is dead
         // countdown
         if (timeLeftGrounded > 0) timeLeftGrounded -= Time.deltaTime;
 

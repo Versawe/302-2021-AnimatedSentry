@@ -723,6 +723,8 @@ GameObject:
   - component: {fileID: 5656740358849273358}
   - component: {fileID: 8806558816853624010}
   - component: {fileID: 4385142970241574905}
+  - component: {fileID: 4187975112488113489}
+  - component: {fileID: 8527832156888692504}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -791,6 +793,9 @@ MonoBehaviour:
   handR: {fileID: 2391701511670436406}
   flash: {fileID: 7753715007326010333, guid: 37f9873186070414ebe78de0abad1c4c, type: 3}
   camOrbit: {fileID: 0}
+  parts: {fileID: 5027706979250595970, guid: 4d13b9ed8d619b14180f56d66fb6264a, type: 3}
+  playerHealth: {fileID: 0}
+  healthBar: {fileID: 0}
 --- !u!114 &8806558816853624010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,6 +811,7 @@ MonoBehaviour:
   leg1: {fileID: 5988141016750393995}
   leg2: {fileID: 5988141016208509059}
   walkSpeed: 5
+  playerHealth: {fileID: 0}
 --- !u!114 &4385142970241574905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,12 +819,47 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5988141017076663610}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e1ac75ca788e544ea00f84ee09ebbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthMax: 100
+  isDying: 0
+--- !u!114 &4187975112488113489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988141017076663610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b442f7cbf00084291c1c40b6875be1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightLeg: {fileID: 5988141016208509059}
+  leftLeg: {fileID: 5988141016750393995}
+  upperTorso: {fileID: 5988141016966036685}
+  lowerTorso: {fileID: 5988141015881566144}
+  hips: {fileID: 5988141016504331581}
+  neck: {fileID: 5988141016339147102}
+  head: {fileID: 5988141017773359416}
+--- !u!114 &8527832156888692504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988141017076663610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1c555ecf9b2424cb6fadb68fff9f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tryAgain: {fileID: 0}
+  GameOverText: {fileID: 0}
+  youWinText: {fileID: 0}
 --- !u!1 &5988141017136496822
 GameObject:
   m_ObjectHideFlags: 0

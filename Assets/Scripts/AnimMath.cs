@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class AnimMath
 {
+    //this script is a copy of our AnimMath Library
     public static float Lerp(float min, float max, float p, bool allowEx = true)
     {
         if (!allowEx)

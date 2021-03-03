@@ -15,7 +15,7 @@ public class HealthSystem : MonoBehaviour
     {
         health = healthMax;
     }
-
+    //apply damage to object with script attached
     public void TakeDamage(float amount)
     {
         if (amount <= 0) return;
@@ -23,11 +23,9 @@ public class HealthSystem : MonoBehaviour
 
         if (health <= 0) Die();
     }
-
+    //to let us know if object's health is less than or == 0
     public void Die()
     {
-        //removes gameobject from the game
-        //Destroy(gameObject);
         isDying = true;
     }
 }

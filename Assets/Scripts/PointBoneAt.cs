@@ -18,6 +18,7 @@ public class PointBoneAt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //gets starting local rotation
         startingRotation = transform.localRotation;
         pt = GetComponentInParent<PlayerTargeting>();
     }
@@ -30,6 +31,7 @@ public class PointBoneAt : MonoBehaviour
 
     private void TurnTowardsTarget()
     {
+        //turn bone towards target
         if (pt && pt.target && pt.wantsToTarget) {
             Vector3 disToTarget = pt.target.position - transform.position;
 

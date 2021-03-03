@@ -17,11 +17,14 @@ public class CameraOrbit : MonoBehaviour
 
     public float shakeIntensity = 0;
 
+    public HealthSystem playerHealth;
+
     // Start is called before the first frame update
     void Start()
     {
         targetScript = moveScript.GetComponent<PlayerTargeting>();
         cam = Camera.main;
+        playerHealth = moveScript.GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -32,6 +35,12 @@ public class CameraOrbit : MonoBehaviour
         transform.position = moveScript.transform.position;
 
 
+        if (playerHealth.isDying)
+        {
+            cam.transform.localRotation = AnimMath.Slide(cam.transform.localRotation, Quaternion.identity, .001f);  // no rotation....
+            return;
+        }
+        
         //if aiming set camera rotation to look at target
         RotateCamToLookAtTarget();
 

@@ -11,6 +11,12 @@ public class TurretShoot : MonoBehaviour
     private float shootDelayMax = 1f;
     private bool isShooting = false;
 
+    AudioSource AudioP;
+    private void Start()
+    {
+        AudioP = GetComponent<AudioSource>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -41,6 +47,7 @@ public class TurretShoot : MonoBehaviour
                 shootDelay = 0;
                 // This is for the shooting Animation, to Jolt the turret back on each gun shot
                 transform.localEulerAngles += new Vector3(-15, 0, 0);
+                AudioP.Play();
             }
         }
         else

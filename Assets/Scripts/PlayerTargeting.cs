@@ -45,6 +45,8 @@ public class PlayerTargeting : MonoBehaviour
     public static float pHealthValue = 200;
     public static float enemiesKilled = 0;
 
+    AudioSource AudioP;
+
     void Start()
     {
         //reset static variables
@@ -59,6 +61,8 @@ public class PlayerTargeting : MonoBehaviour
         camOrbit = Camera.main.GetComponentInParent<CameraOrbit>();
 
         playerHealth = GetComponent<HealthSystem>();
+
+        AudioP = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -120,6 +124,7 @@ public class PlayerTargeting : MonoBehaviour
         if (!CanSeeThing(target)) return;
 
         camOrbit.Shake(1);
+        AudioP.Play();
 
         cooldownShoot = 1 / roundsPerSecond;
         // attack!

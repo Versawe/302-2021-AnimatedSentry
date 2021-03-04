@@ -26,6 +26,9 @@ public class TurretTarget : MonoBehaviour
 
     Quaternion lookingRotation;
     Quaternion startRotation;
+
+    public GameObject AudioPOBJ;
+    AudioSource AudioP;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +40,8 @@ public class TurretTarget : MonoBehaviour
         playerHealth = Player.GetComponent<HealthSystem>();
 
         isShootable = GetComponentInParent<ShootableThing>();
+
+        AudioP = AudioPOBJ.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -81,6 +86,7 @@ public class TurretTarget : MonoBehaviour
         if (dyingTimer <= 0.01f)
         {
             Instantiate(parts, GunParent.position, GunParent.rotation); // this spawns death particles for sentry
+            AudioP.Play();
         }
         if (dyingTimer <= 0) // this destroys sentry object after death animation is complete
         {

@@ -17,6 +17,7 @@ public class BulletLaunch : MonoBehaviour
 
         //once bullet spawns apply the force once on start
         rb.AddForce(transform.forward * thrust, ForceMode.Impulse);
+
     }
 
     // Update is called once per frame

@@ -13,6 +13,9 @@ public class DeathAnimation : MonoBehaviour
     public Transform head;
 
     HealthSystem playerHealth;
+
+    public GameObject AudioPOBJ;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,7 @@ public class DeathAnimation : MonoBehaviour
     {
         //trigger death animation if isDying on player is true
         if (!playerHealth.isDying) return; //if alive won't continue
+        AudioPOBJ.SetActive(true);
 
         //Death Animation which is a variety of the player's joints sinking into the ground
         upperTorso.localPosition = AnimMath.Slide(upperTorso.localPosition, new Vector3(0, -1, 0), 0.5f);
